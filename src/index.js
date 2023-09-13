@@ -9,8 +9,8 @@ import {createStore, applyMiddleware} from 'redux';
 import createSagaMiddleware from 'redux-saga'
 import rootSaga from './sagas'
 import 'bootstrap/dist/css/bootstrap.min.css'
-axios.defaults.withCredentials = true;
-axios.defaults.baseURL = 'https://cors-anywhere.herokuapp.com/https://rem.dbwebb.se/api';
+//axios.defaults.withCredentials = true;
+axios.defaults.baseURL = 'https://rem.dbwebb.se/api';
 const sagaMiddleware = createSagaMiddleware()
 
 const store = createStore(reducers,applyMiddleware(sagaMiddleware));
