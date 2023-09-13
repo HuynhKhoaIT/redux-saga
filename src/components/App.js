@@ -1,21 +1,40 @@
-import React, { useEffect } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
-import { getUsersRequest } from '../actions/users';
+import { getUsersRequest,createUserRequest,deleteUserRequest } from '../actions/users';
 import UsersList from './UsersList'
-function App(props) {
-  // Sử dụng hook useEffect để gọi getUsersRequest khi component được tạo
-  useEffect(() => {
-    props.getUsersRequest();
-  }, []); // Thêm [] để đảm bảo useEffect chỉ chạy một lần khi component được tạo
-  const users = props.users;
+import NewUserForm from './NewUserForm';
+class App extends Component{
+  constructor(props){
+    super(props);
+    this.props.getUsersRequest();
+  }
+  
+  handleSubmit = (firstName, lastName) =>{
+    console.log(firstName,lastName)
+    this.props.createUserRequest({
+      firstName,
+      lastName
+    })
+  }
 
-  return (
-    <div style={{margin: '0 auto',padding: '10px', maxwidth:'600px'}}> 
-      <UsersList users ={users.items}/>
-    </div>
-  );
+  handleDeleteUserClick = (userId) =>{
+    this.props.deleteUserRequest(userId)
+  }
+  render(){
+    const users = this.props.users;
+    return (
+      <div style={{margin: '0 auto',padding: '10px', maxWidth:'600px'}}> 
+        <NewUserForm onSubmit={this.handleSubmit}/>
+        <UsersList onDeleteUser={this.handleDeleteUserClick} users ={users.items}/>
+      </div>
+    );
+  }
+
+ 
 }
 
 export default connect(({users})=>({users}), {
-  getUsersRequest
+  getUsersRequest,
+  createUserRequest,
+  deleteUserRequest
 })(App);
